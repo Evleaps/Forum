@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="Forum:war exploded">
-    <output-path>$PROJECT_DIR$/target/SpringSecurityApp</output-path>
+    <output-path>$PROJECT_DIR$/target/Forum</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -51,7 +51,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/SpringSecurityApp/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/Forum/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="Forum/web/Web" />
     </root>

@@ -5,7 +5,7 @@ import net.forum.model.User;
 import java.util.List;
 
 /**
- * Service class for {@link net.forum.model.User}
+ * Service class for {@link User}
  */
 
 public interface UserService {

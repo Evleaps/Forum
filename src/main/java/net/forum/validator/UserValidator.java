@@ -1,4 +1,4 @@
-package net.forum.validation;
+package net.forum.validator;
 
 import net.forum.model.User;
 import net.forum.service.UserService;
@@ -9,7 +9,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 /**
- * Validator for {@link net.forum.model.User} class,
+ * Validator for {@link User} class,
  * implements {@link Validator} interface.
  *
  * @author Eugene Suleimanov

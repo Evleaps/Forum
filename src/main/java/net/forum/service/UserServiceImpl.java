@@ -1,9 +1,9 @@
 package net.forum.service;
 
-import net.forum.dao.RoleDao;
 import net.forum.dao.UserDao;
 import net.forum.model.Role;
 import net.forum.model.User;
+import net.forum.dao.RoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

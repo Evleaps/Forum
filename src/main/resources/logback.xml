@@ -7,7 +7,7 @@
         </encoder>
     </appender>
 
-    <logger name="net.webChat.registration">
+    <logger name="net.forum">
         <level value="debug"/>
     </logger>
 
