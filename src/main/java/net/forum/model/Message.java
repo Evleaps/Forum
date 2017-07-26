@@ -22,18 +22,18 @@ public class Message {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "topicName")
-    private String topicName;
+    @Column(name = "topicId")
+    private String topicId;
 
     public Message() {
     }
 
-    public String getTopicName() {
-        return topicName;
+    public String getTopicId() {
+        return topicId;
     }
 
-    public void setTopicName(String topicName) {
-        this.topicName = topicName;
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
     }
 
     public String getUsername() {

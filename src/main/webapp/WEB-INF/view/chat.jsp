@@ -37,7 +37,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="">MERA school 2K17</a>
+            <a class="navbar-brand" href="">${messageForm.themeName} / ${messageForm.topicName}</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -51,13 +51,13 @@
                 </c:if>
             </ul>
 
-           <%--ПОИСК СООБЩЕНИЙ
-            <form class="navbar-form navbar-right" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search message..">
-                </div>
-                <button type="submit" class="btn btn-default">Search</button>
-            </form>--%>
+            <%--ПОИСК СООБЩЕНИЙ
+             <form class="navbar-form navbar-right" role="search">
+                 <div class="form-group">
+                     <input type="text" class="form-control" placeholder="Search message..">
+                 </div>
+                 <button type="submit" class="btn btn-default">Search</button>
+             </form>--%>
         </div>
     </div>
 
@@ -71,82 +71,49 @@
 
 <br>
 <br>
-
-
-<%--Список активных пользователей--%>
-<div class="main_section">
-    <div class="container">
-        <div class="chat_container">
-            <div class="col-sm-3 chat_sidebar">
-                <div class="row">
-                    <div class="dropdown all_conversation">
-                        <button class="dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">All users
-                        </button>
-                    </div>
-                    <div class="member_list">
-                        <ul class="list-unstyled">
-                            <%--Вывод всех пользователей из БД--%>
-                            <c:forEach items="${allInstanceUsers}" var="allInstanceUsers">
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left"></span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header_sec">
-                                            <strong class="primary-font">${allInstanceUsers.username}</strong>
-                                        </div>
-                                    </div>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!--СПИСОК ПОЛЬЗОВАТЕЛЕЙ КОНЕЦ-->
-
-
-            <%--ФОРМА ОТОБРАЖЕНИЯ и ВВОДА СООБЩЕНИЙ --%>
-            <div class="col-sm-9 message_section">
-                <div class="row">
-                    <div class="chat_area">
-                        <ul class="list-unstyled">
-                            <%--items мы указываем параметр из метода GET в контроллере, присваиваем ему имя
-                               var="" по которому мы можем обращаться к полям нашего акласса
-                               Соответственно будут выведены поля класса каждого инстанса пока они не закончатся--%>
-                            <c:forEach items="${allInstanceMessages}" var="allInstanceMessages">
-                                <li class="left clearfix">
-                                    <span class="chat-img1 pull-left"></span>
-                                    <div class="chat-body1 clearfix">
-                                        <p><b>${allInstanceMessages.username}</b>
-                                            <br>${allInstanceMessages.message}</p>
-                                        <div class="chat_time pull-right">${allInstanceMessages.date}</div>
-                                    </div>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </div><!--chat_area-->
-                    <%--Форма для отображения сообщений КОНЕЦ--%>
-
-                    <%--Ввод сообщений в textatea и отправка формы на сервер
-                    P.S. Форма отправляет данные на ту-же страницу на которой находимся,
-                    ModelAttribyte должен быть прописан и в GET и в POST, что бы знать, куда отправлять и откуда брать--%>
-                    <form:form action="/chat" method="POST" modelAttribute="messageForm">
-                        <div class="message_write">
-                            <form:textarea resize="none" path="message" class="form-control"
-                                           placeholder="Your message.."/><%--все параметры прописываются внутри формы--%>
-                            <div class="clearfix"></div>
-                            <div class="chat_bottom">
-                                <button class="pull-right btn btn-primary" type="submit">Send</button>
-                                <a href="/" class="pull-left btn btn-primary">Refresh</a>
-                            </div>
+<%--ФОРМА ОТОБРАЖЕНИЯ и ВВОДА СООБЩЕНИЙ --%>
+<div class="col-sm-9 message_section">
+    <div class="row">
+        <div class="chat_area">
+            <ul class="list-unstyled">
+                <%--items мы указываем параметр из метода GET в контроллере, присваиваем ему имя
+                   var="" по которому мы можем обращаться к полям нашего акласса
+                   Соответственно будут выведены поля класса каждого инстанса пока они не закончатся--%>
+                <c:forEach items="${allInstanceMessages}" var="allInstanceMessages">
+                    <c:if test="${allInstanceMessages.topicId == }"
+                    <li class="left clearfix">
+                        <span class="chat-img1 pull-left"></span>
+                        <div class="chat-body1 clearfix">
+                            <p><b>${allInstanceMessages.username}</b>
+                                <br>${allInstanceMessages.message}</p>
+                            <div class="chat_time pull-right">${allInstanceMessages.date}</div>
                         </div>
-                    </form:form>
-                    <%--Ввод и отправка сообщений из формы КОНЕЦ--%>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div><!--chat_area-->
+        <%--Форма для отображения сообщений КОНЕЦ--%>
+
+        <%--Ввод сообщений в textatea и отправка формы на сервер
+        P.S. Форма отправляет данные на ту-же страницу на которой находимся,
+        ModelAttribyte должен быть прописан и в GET и в POST, что бы знать, куда отправлять и откуда брать--%>
+        <form:form action="/chat" method="POST" modelAttribute="messageForm">
+            <div class="message_write">
+                <form:textarea resize="none" path="message" class="form-control"
+                               placeholder="Your message.."/><%--все параметры прописываются внутри формы--%>
+                <div class="clearfix"></div>
+                <div class="chat_bottom">
+                    <button class="pull-right btn btn-primary" type="submit">Send</button>
+                    <a href="/" class="pull-left btn btn-primary">Refresh</a>
                 </div>
             </div>
-            <%--Форма отображения и ввода сообщений КОНЕЦ--%>
-        </div>
+        </form:form>
+        <%--Ввод и отправка сообщений из формы КОНЕЦ--%>
     </div>
+</div>
+<%--Форма отображения и ввода сообщений КОНЕЦ--%>
+</div>
+</div>
 </div>
 
 <br>

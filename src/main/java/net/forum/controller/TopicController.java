@@ -24,6 +24,7 @@ public class TopicController {
     @RequestMapping(value = "/topic", method = RequestMethod.GET)
     public String topicPage(Model model) {
         List<Topic> allInstanceTopic =  topicService.getAllTopic ();
+        model.addAttribute ("allInstanceTopic", allInstanceTopic);
         model.addAttribute ("topicForm", new Topic ());
         return "topic";
     }
