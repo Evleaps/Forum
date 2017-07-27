@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="spring_security_app@localhost" uuid="07529fd6-17d0-4413-9745-1875fb19fa9c">
+    <data-source source="LOCAL" name="forum@localhost" uuid="df5bce35-cef6-4dec-a273-175771c8f3e7">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/spring_security_app</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/forum</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

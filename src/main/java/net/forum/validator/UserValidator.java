@@ -31,30 +31,30 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 /**Если поле Login не заполнили, выводим сообщение, что оно обязательно к заполнению*/
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "Required");
-        if (user.getLogin ().length() < 3 || user.getLogin ().length() > 30) {
-            errors.rejectValue("login", "Size.userForm.login");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "Required");
+        if (user.getUsername ().length() < 3 || user.getUsername ().length() > 30) {
+            errors.rejectValue("username", "Size.userForm.username");
         }
 /**Если такой пипл уже есть в БД*/
-        if (userService.findByUsername(user.getLogin ()) != null) {
-            errors.rejectValue("login", "Duplicate.userForm.login");
+        if (userService.findByUsername(user.getUsername ()) != null) {
+            errors.rejectValue("username", "Duplicate.userForm.username");
         }
 /**Если поле password не заполнили, выводим сообщение, что оно обязательно к заполнению*/
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Required");
         /**Если поле password имеет короткий пароль, выводим сообщение из проперти*/
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 30) {
+        if (user.getPassword().length() < 3 || user.getPassword().length() > 30) {
             errors.rejectValue("password", "Size.userForm.password");
         }
 /**Пароль должен содержать минимум 1 число*/
-        if (!user.getPassword().matches ("\\d")) {
+    /*    if (!user.getPassword().matches ("\\d")) {
             errors.rejectValue("password", "RequiredMinOneNumber.userForm.password");
-        }
+        }*/
 
 
  /**Пароль не должен содержать пунктуации*/
-        if (user.getPassword().toString ().matches ("\\p{Punct}")) {
+     /*   if (user.getPassword().toString ().matches ("\\p{Punct}")) {
             errors.rejectValue("password", "Punctuation.userForm.password");
-        }
+        }*/
 
 /**Если поле password не совпадает с повторите пароль, выводим сообщение из проперти*/
         if (!user.getConfirmPassword().equals(user.getPassword())) {

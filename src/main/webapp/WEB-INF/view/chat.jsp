@@ -50,14 +50,6 @@
                     <li><a onclick="document.forms['logoutForm'].submit()">Log out</a></li>
                 </c:if>
             </ul>
-
-            <%--ПОИСК СООБЩЕНИЙ
-             <form class="navbar-form navbar-right" role="search">
-                 <div class="form-group">
-                     <input type="text" class="form-control" placeholder="Search message..">
-                 </div>
-                 <button type="submit" class="btn btn-default">Search</button>
-             </form>--%>
         </div>
     </div>
 
@@ -80,7 +72,7 @@
                    var="" по которому мы можем обращаться к полям нашего акласса
                    Соответственно будут выведены поля класса каждого инстанса пока они не закончатся--%>
                 <c:forEach items="${allInstanceMessages}" var="allInstanceMessages">
-                    <c:if test="${allInstanceMessages.topicId == }"
+                  <%--  <c:if test="${allInstanceMessages.topicId}"--%>
                     <li class="left clearfix">
                         <span class="chat-img1 pull-left"></span>
                         <div class="chat-body1 clearfix">
@@ -91,7 +83,7 @@
                     </li>
                 </c:forEach>
             </ul>
-        </div><!--chat_area-->
+        </div>
         <%--Форма для отображения сообщений КОНЕЦ--%>
 
         <%--Ввод сообщений в textatea и отправка формы на сервер

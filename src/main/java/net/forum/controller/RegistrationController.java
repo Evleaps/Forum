@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Created by Ромчи on 24.07.2017.
+ * Controller for {@link User}
  */
 @Controller
 public class RegistrationController {
@@ -45,8 +45,8 @@ public class RegistrationController {
         }
 
         userService.save(userForm);
-        securityService.autoLogin(userForm.getLogin (), userForm.getConfirmPassword());
+        securityService.autoLogin(userForm.getUsername (), userForm.getConfirmPassword());
 
-        return "redirect:/";//перенаправляем не на jsp, а на адресс "/"
+        return "redirect:/forum";//перенаправляем не на jsp, а на адресс "/"
     }
 }

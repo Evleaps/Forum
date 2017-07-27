@@ -1,8 +1,20 @@
 /*-- Table: users
 CREATE TABLE users (
   id       INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL
+  login VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  firstName VARCHAR(255) NOT NULL
+)
+  ENGINE = InnoDB;
+
+-- Table: messages
+CREATE TABLE messages (
+  id       INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  login VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  firstName VARCHAR(255) NOT NULL
 )
   ENGINE = InnoDB;
 
@@ -23,19 +35,13 @@ CREATE TABLE user_roles (
 
   UNIQUE (user_id, role_id)
 )
-  ENGINE = InnoDB;
-*/
+  ENGINE = InnoDB;*/
+
 -- Insert data
 
-/*INSERT INTO users VALUES (1,'$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG','Roman');
-INSERT INTO users VALUES (2,'$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG','Kate1996');
-INSERT INTO users VALUES (3,'$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG','Kirill');
-INSERT INTO users VALUES (4,'$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG','Marina Leonidovna');*/
+INSERT INTO users(id, firstName, lastName, password, username) VALUES (1, 'Roman', 'Aymaletdinov','$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG','Roman');
 
 INSERT INTO roles VALUES (1, 'ROLE_USER');
 INSERT INTO roles VALUES (2, 'ROLE_ADMIN');
 
-/*INSERT INTO user_roles VALUES (1, 2);
-INSERT INTO user_roles VALUES (2, 1);
-INSERT INTO user_roles VALUES (3, 1);
-INSERT INTO user_roles VALUES (4, 1);*/
+INSERT INTO user_roles VALUES (1, 2);
