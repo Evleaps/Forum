@@ -33,11 +33,17 @@ public class TopicController {
     private ThemeService themeService;
 
     @RequestMapping(value = "topic/{id}", method = RequestMethod.GET)
-    public String topicPage(Model model) {
+    public String topicPage(Model model, HttpServletRequest request) {
         List<Topic> allInstanceTopic =  topicService.getAllTopic ();
+        List<Theme> allInstanceTheme = themeService.getAllThemes ();
         model.addAttribute ("allInstanceTopic", allInstanceTopic);
+        model.addAttribute ("allInstanceTheme", allInstanceTheme);
         model.addAttribute ("topicForm", new Topic ());
-        model.addAttribute ("themeForm", new Theme ());
+        //вытащим из URL id что-бы найти название темы в которой лежит топик
+        //String url = request.getHeader("referer"); URL предыдущая страница
+        String url = request.getRequestURI ();//URL текущая страница
+        int id = Integer.parseInt (url.split ("/topic/")[1]) - 1;
+        model.addAttribute ("idTheme", id);
         return "topic";
     }
 
@@ -48,13 +54,9 @@ public class TopicController {
     }
 
     @RequestMapping(value = "/createTopic", method = RequestMethod.POST)
-    public String addTheme(@ModelAttribute("topicForm") Topic topicForm, Model model, HttpServletRequest request) {
-        if (topicForm.getId () == null) {
+    public String addTheme(@ModelAttribute("topicForm") Topic topicForm, Model model) {
+        if (topicForm.getId () == 0) {
             topicForm.setUsername (SecurityContextHolder.getContext ().getAuthentication ().getName ());
-            //вытащим из URL id что-бы найти название темы в которой лежит топик
-            String url = request.getHeader("referer");
-            Long id = Long.parseLong (url.split ("/topic/")[1]);
-            topicForm.setThemeId (id);
             topicService.save (topicForm);
         }
         return "redirect:/topic";
