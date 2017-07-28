@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.support.AbstractMultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,20 +37,23 @@ public class TopicController {
     @RequestMapping(value = "topic/{id}", method = RequestMethod.GET)
     public String topicPage(Model model, HttpServletRequest request) {
         List<Topic> allInstanceTopic =  topicService.getAllTopic ();
+        Collections.sort (allInstanceTopic);
         List<Theme> allInstanceTheme = themeService.getAllThemes ();
         model.addAttribute ("allInstanceTopic", allInstanceTopic);
         model.addAttribute ("allInstanceTheme", allInstanceTheme);
         model.addAttribute ("topicForm", new Topic ());
         //вытащим из URL id что-бы найти название темы в которой лежит топик
-        //String url = request.getHeader("referer"); URL предыдущая страница
         String url = request.getRequestURI ();//URL текущая страница
         int id = Integer.parseInt (url.split ("/topic/")[1]) - 1;
         model.addAttribute ("idTheme", id);
         return "topic";
     }
 
+    private int id;
     @RequestMapping(value = "/createTopic", method = RequestMethod.GET)
-    public String pageCreateTheme(Model model) {
+    public String pageCreateTheme(Model model, HttpServletRequest request) {
+        String url = request.getHeader("referer"); //URL предыдущая страница
+        id = Integer.parseInt (url.split ("/topic/")[1]);
         model.addAttribute ("topicForm", new Topic ());
         return "createTopic";
     }
@@ -57,9 +62,11 @@ public class TopicController {
     public String addTheme(@ModelAttribute("topicForm") Topic topicForm, Model model) {
         if (topicForm.getId () == 0) {
             topicForm.setUsername (SecurityContextHolder.getContext ().getAuthentication ().getName ());
+            topicForm.setThemeId (id-1);
+            topicForm.setLastPostDate (new Date ());
             topicService.save (topicForm);
         }
-        return "redirect:/topic";
+        return "redirect:/topic/" + id ;
     }
 
 }

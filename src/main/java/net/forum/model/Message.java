@@ -23,16 +23,16 @@ public class Message {
     private String username;
 
     @Column(name = "topicId")
-    private String topicId;
+    private int topicId;
 
     public Message() {
     }
 
-    public String getTopicId() {
+    public int getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(String topicId) {
+    public void setTopicId(int topicId) {
         this.topicId = topicId;
     }
 
