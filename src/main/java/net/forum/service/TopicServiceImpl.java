@@ -27,6 +27,11 @@ public class TopicServiceImpl implements TopicService {
         topicDao.delete (id);
     }
 
+    @Override
+    public Topic findOne(long id) {
+        return topicDao.findOne (id);
+    }
+
 
     @Override
     public List<Topic> getAllTopic() {

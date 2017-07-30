@@ -59,32 +59,22 @@
 <br>
 <%--ФОРМА ВВОДА НАЗВАНИЯ И ОПИСАНИЯ НОВОЙ ТЕМЫ--%>
 <div class="container">
-    <c:if test="${allInstanceTopic.get(topicForm.id) != null}">
+    <c:if test="${themeForm.themeName != null}">
         <h2 class="form-heading" align="center">Update topic</h2>
     </c:if>
-    <c:if test="${allInstanceTopic.get(topicForm.id) == null}">
+    <c:if test="${themeForm.themeName == null}">
         <h2 class="form-heading" align="center">Create new topic</h2>
     </c:if>
     <br>
     <br>
     <form:form method="POST" modelAttribute="topicForm" class="form-signin">
         <div class="message_write">
-            <c:if test="${allInstanceTopic.get(topicForm.id) == null}">
-                <form:input type="text" path="topicName" class="form-control" placeholder="The title of the topic"
-                            autofocus="true"></form:input>
-                <br>
-                <form:textarea resize="none" path="description" class="form-control"
-                               placeholder="Your description.."/>
-                <div class="clearfix"></div>
-            </c:if>
-
-            <c:if test="${allInstanceTopic.get(topicForm.id) != null}">
-                <form:input  type="text" path="topicName" class="form-control"
-                            autofocus="true"></form:input>
-                <br>
-                <form:textarea  resize="none" path="description" class="form-control"/>
-                <div class="clearfix"></div>
-            </c:if>
+            <form:input type="text" path="topicName" class="form-control" placeholder="The title of the topic"
+                        autofocus="true"></form:input>
+            <br>
+            <form:textarea resize="none" path="description" class="form-control"
+                           placeholder="Your description.."/>
+            <div class="clearfix"></div>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form:form>

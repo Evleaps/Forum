@@ -38,12 +38,11 @@ public class TopicController {
     public String topicPage(Model model, HttpServletRequest request) {
         List<Topic> allInstanceTopic =  topicService.getAllTopic ();
         Collections.sort (allInstanceTopic);
-        List<Theme> allInstanceTheme = themeService.getAllThemes ();
         model.addAttribute ("allInstanceTopic", allInstanceTopic);
-        model.addAttribute ("allInstanceTheme", allInstanceTheme);
+        System.out.println ( thisURL (request) );
+        System.out.println (themeService.getAllThemes ().size () );
+        model.addAttribute ("themeForm", themeService.findOne (thisURL (request)));//для названия в заголовке
         model.addAttribute ("topicForm", new Topic ());
-        //вытащим из URL id что-бы найти название темы в которой лежит топик
-        model.addAttribute ("idTheme", postURL (request));
         return "topic";
     }
    //БЛОК СОЗДАНИЯ НОВОГО ТОПИКА
@@ -51,7 +50,7 @@ public class TopicController {
     @RequestMapping(value = "/createTopic", method = RequestMethod.GET)
     public String pageCreateTopic(Model model, HttpServletRequest request) {
         model.addAttribute ("topicForm", new Topic ());
-        id = thisURL (request);
+        id = postURL (request);
         return "createUpdateTopic";
     }
 
@@ -59,7 +58,7 @@ public class TopicController {
     public String addTopic(@ModelAttribute("topicForm") Topic topicForm, Model model) {
         if (topicForm.getId () == null) {
             topicForm.setUsername (SecurityContextHolder.getContext ().getAuthentication ().getName ());
-            topicForm.setThemeId (this.id - 1);
+            topicForm.setThemeId (id);
             topicForm.setLastPostDate (new Date ());
             topicService.save (topicForm);
         }
@@ -70,38 +69,39 @@ public class TopicController {
     @RequestMapping(value = "/deleteTopic/{id}", method = RequestMethod.GET)
     public String deleteTopic(@PathVariable("id") int id, Model model, HttpServletRequest request) {
         topicService.delete (id);
-        return "redirect:/topic/" + thisURL(request);
+        return "redirect:/topic/" + postURL(request);
     }
 
     //БЛОК РЕДАКТИРОВАНИЯ
+    private int url;
     @RequestMapping(value = "/updateTopic/{id}", method = RequestMethod.GET)
-    public String updateTopic(@PathVariable("id") int id, Model model) {
-        model.addAttribute ("topicForm", topicService.getAllTopic ().get (id-1));
+    public String updateTopic(@PathVariable("id") int id, Model model, HttpServletRequest request) {
+        model.addAttribute ("topicForm", topicService.findOne (id));
         List<Topic> allInstanceTopic =  topicService.getAllTopic ();
         model.addAttribute ("allInstanceTopic", allInstanceTopic);
+        url = postURL (request);
         return "createUpdateTopic";
     }
 
     @RequestMapping(value = "/updateTopic/{id}", method = RequestMethod.POST)
     public String updateTopic(@PathVariable("id") int id,
-                              @ModelAttribute("topicForm") Topic topicForm, HttpServletRequest request) {
-        topicForm.setLastPostDate (topicService.getAllTopic ().get (id-1).getLastPostDate ());
-        topicForm.setUsername (topicService.getAllTopic ().get (id-1).getUsername ());
-        topicForm.setThemeId (topicService.getAllTopic ().get (id-1).getThemeId ());
+                              @ModelAttribute("topicForm") Topic topicForm) {
+        topicForm.setLastPostDate (topicService.findOne (id).getLastPostDate ());
+        topicForm.setUsername (topicService.findOne (id).getUsername ());
+        topicForm.setThemeId (topicService.findOne (id).getThemeId ());
         topicService.save (topicForm);
 
-        return "redirect:/topic/" + thisURL(request);
+        return "redirect:/topic/" + url;
     }
     //
 
-    private int thisURL(HttpServletRequest request) {
+    private int postURL(HttpServletRequest request) {
         String url = request.getHeader("referer"); //URL предыдущая страница
         return Integer.parseInt (url.split ("/topic/")[1]);
     }
 
-    private int postURL(HttpServletRequest request) {
-        //вытащим из URL id что-бы найти название темы в которой лежит топик
+    private int thisURL(HttpServletRequest request) {
         String url = request.getRequestURI ();//URL текущая страница
-        return Integer.parseInt (url.split ("/topic/")[1]) - 1;
+        return Integer.parseInt (url.split ("/topic/")[1]);
     }
 }

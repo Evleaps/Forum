@@ -12,5 +12,7 @@ public interface TopicService {
 
     void delete(long id);
 
+    Topic findOne(long id);
+
     List<Topic> getAllTopic();
 }

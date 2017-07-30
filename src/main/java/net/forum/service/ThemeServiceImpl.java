@@ -28,6 +28,11 @@ public class ThemeServiceImpl implements ThemeService{
     }
 
     @Override
+    public Theme findOne(long id) {
+        return themeDao.findOne (id);
+    }
+
+    @Override
     public List<Theme> getAllThemes() {
         return themeDao.findAll ();
     }

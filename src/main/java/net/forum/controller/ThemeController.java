@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +61,7 @@ public class ThemeController {
     //БЛОК РЕДАКТИРОВАНИЯ
     @RequestMapping(value = "/updateTheme/{id}", method = RequestMethod.GET)
     public String updateTheme(@PathVariable("id") int id, Model model) {
-        model.addAttribute ("themeForm", themeService.getAllThemes ().get (id-1));
+        model.addAttribute ("themeForm", themeService.findOne (id));
         List<Theme> allInstanceTheme =  themeService.getAllThemes ();
         model.addAttribute ("allInstanceTheme", allInstanceTheme);
         return "createUpdateTheme";
@@ -71,7 +70,7 @@ public class ThemeController {
     @RequestMapping(value = "/updateTheme/{id}", method = RequestMethod.POST)
     public String updateTheme(@PathVariable("id") int id,
                               @ModelAttribute("themeForm") Theme themeForm) {
-        themeForm.setLastPostDate (themeService.getAllThemes ().get (id-1).getLastPostDate ());
+        themeForm.setLastPostDate (themeService.findOne (id).getLastPostDate ());
         themeService.save (themeForm);
 
         return "redirect:/forum";

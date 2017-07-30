@@ -38,22 +38,16 @@ public class PageInsideTopicController {
     private ThemeService themeService;
 
     private int  id;
-    private int  idURL;
     private Date date;
 
     @RequestMapping(value = "chat/{id}", method = RequestMethod.GET)
-    public String welcome(Model model, HttpServletRequest request) {
+    public String welcome(@PathVariable("id") int id, Model model) {
         List<Message> allInstanceMessages = messageService.getAllMessages ();
-        List<Topic> allInstanceTopic = topicService.getAllTopic ();
         Collections.reverse (allInstanceMessages);//что-бы новые сообщения были вверху страницы
         model.addAttribute ("allInstanceMessages", allInstanceMessages);//jsp увидит поля всех инстансов Message
-        model.addAttribute ("allInstanceTopic", allInstanceTopic);
+        model.addAttribute ("topicForm", topicService.findOne (id));
         model.addAttribute ("messageForm", new Message ());//отправляем в конструктор
-        //вытащим из URL id что-бы найти название топика в котором мы находимся
-        String url = request.getRequestURI ();//URL текущая страница
-        idURL = Integer.parseInt (url.split ("/chat/")[1]);//нужен для возвращения на ту же страницу POST
-        id = idURL - 1; //А это нужно, что-бы в JSP мы знали, в каком именно топике находимся и какие отображать сообщения
-        model.addAttribute ("idTopic", id);
+        this.id = id;
         return "chat";
     }
 
@@ -72,26 +66,25 @@ public class PageInsideTopicController {
             messageForm.setTopicId (id);
             messageService.save (messageForm);
         }
-        return "redirect:/chat/" + idURL;
+        return "redirect:/chat/" + id;
     }
 
     private void updateDataPost() {
         Topic topic = new Topic ();
         Theme theme = new Theme ();
 
-        topic.setId (topicService.getAllTopic ().get (id).getId ());
-        topic.setThemeId (topicService.getAllTopic ().get (id).getThemeId ());
-        topic.setUsername (topicService.getAllTopic ().get (id).getUsername ());
-        topic.setDescription (topicService.getAllTopic ().get (id).getDescription ());
+        topic.setId (topicService.findOne (id).getId ());
+        topic.setThemeId (topicService.findOne (id).getThemeId ());
+        topic.setUsername (topicService.findOne (id).getUsername ());
+        topic.setDescription (topicService.findOne (id).getDescription ());
         topic.setLastPostDate (date);
-        topic.setTopicName (topicService.getAllTopic ().get (id).getTopicName ());
+        topic.setTopicName (topicService.findOne (id).getTopicName ());
         topicService.save (topic);
 
-        int idTheme = topicService.getAllTopic ().get (id).getThemeId ();
-        theme.setId (themeService.getAllThemes ().get (idTheme).getId ());
-        theme.setDescription (themeService.getAllThemes ().get (idTheme).getDescription ());
+        theme.setId (themeService.findOne (topicService.findOne (id).getThemeId ()).getId ());
+        theme.setDescription (themeService.findOne (id).getDescription ());
         theme.setLastPostDate (date);
-        theme.setThemeName (themeService.getAllThemes ().get (idTheme).getThemeName ());
+        theme.setThemeName (themeService.findOne (id).getThemeName ());
         themeService.save (theme);
     }
 }

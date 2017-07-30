@@ -65,4 +65,14 @@ public class Theme implements Comparable<Theme>{
     public int compareTo(Theme that) {
         return that.lastPostDate.compareTo (this.getLastPostDate ());
     }
+
+    @Override
+    public String toString() {
+        return "Theme{" +
+                "id=" + id +
+                ", themeName='" + themeName + '\'' +
+                ", description='" + description + '\'' +
+                ", lastPostDate=" + lastPostDate +
+                '}';
+    }
 }

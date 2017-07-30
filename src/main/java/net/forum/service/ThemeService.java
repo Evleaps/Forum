@@ -15,5 +15,7 @@ public interface ThemeService {
 
     void delete(long id);
 
+    Theme findOne(long id);
+
     List<Theme> getAllThemes();
 }

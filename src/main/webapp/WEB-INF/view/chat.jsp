@@ -59,7 +59,7 @@
 <br>
 <br>
 
-<h2 class="form-heading" align="center">${allInstanceTopic.get(idTopic).topicName}</h2>
+<h2 class="form-heading" align="center">${topicForm.topicName}</h2>
 
 <br>
 <br>
@@ -75,7 +75,7 @@
                                var="" по которому мы можем обращаться к полям нашего акласса
                                Соответственно будут выведены поля класса каждого инстанса пока они не закончатся--%>
                             <c:forEach items="${allInstanceMessages}" var="allInstanceMessages">
-                                <c:if test="${allInstanceMessages.topicId == idTopic}">
+                                <c:if test="${topicForm.id == allInstanceMessages.topicId}">
                                     <li class="left clearfix">
                                         <span class="chat-img1 pull-left"></span>
                                         <div class="chat-body1 clearfix">

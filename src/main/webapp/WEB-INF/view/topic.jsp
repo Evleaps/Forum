@@ -58,7 +58,7 @@
 <br>
 <br>
 
-<h2 class="form-heading" align="center">${allInstanceTheme.get(idTheme).themeName}</h2>
+<h2 class="form-heading" align="center">${themeForm.themeName}</h2>
 
 <br>
 <br>
@@ -74,7 +74,7 @@
         </tr>
         </thead>
         <c:forEach items="${allInstanceTopic}" var="allInstanceTopic">
-            <c:if test="${allInstanceTopic.themeId == idTheme}">
+            <c:if test="${allInstanceTopic.themeId == themeForm.id}">
                 <tbody>
                 <tr>
                     <td>${allInstanceTopic.username}</td>
