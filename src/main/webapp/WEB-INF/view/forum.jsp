@@ -69,7 +69,9 @@
         <tr>
             <th>Name</th>
             <th>Last post data</th>
-            <th>Options</th>
+            <c:if test="${userRole.equals('[ROLE_ADMIN]')}">
+                <th>Options</th>
+            </c:if>
         </tr>
         </thead>
         <c:forEach items="${allInstenceTheme}" var="allInstanceTheme">
@@ -77,10 +79,13 @@
             <tr>
                 <td><a href="/topic/${allInstanceTheme.id}">${allInstanceTheme.themeName}</a></td>
                 <td>${allInstanceTheme.lastPostDate}</td>
-                <td>
-                    <a href="<c:url value="/deleteTheme/${allInstanceTheme.id}"/>" class="pull-left btn btn-danger">Delete</a>
-                    <a href="<c:url value="/updateTheme/${allInstanceTheme.id}"/>" class="pull-left btn btn-primary">Update</a>
-                </td>
+                <c:if test="${userRole.equals('[ROLE_ADMIN]')}">
+                    <td>
+                        <a href="<c:url value="/deleteTheme/${allInstanceTheme.id}"/>" class="pull-left btn btn-danger">Delete</a>
+                        <a href="<c:url value="/updateTheme/${allInstanceTheme.id}"/>"
+                           class="pull-left btn btn-primary">Update</a>
+                    </td>
+                </c:if>
             </tr>
             </tbody>
         </c:forEach>
@@ -91,9 +96,9 @@
 <br>
 <br>
 <br>
-
-<h4 class="text-center"><a href="${contextPath}/createTheme">Create an new theme</a></h4>
-
+<c:if test="${userRole.equals('[ROLE_ADMIN]')}">
+    <h4 class="text-center"><a href="${contextPath}/createTheme">Create an new theme</a></h4>
+</c:if>
 <footer>
     <span style='padding-left:10px;'> &copy; Aymaletdinov R.</span>
 </footer>

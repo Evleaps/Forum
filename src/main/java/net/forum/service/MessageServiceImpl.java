@@ -20,6 +20,16 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public void delete(long id) {
+        messageDao.delete (id);
+    }
+
+    @Override
+    public Message findOne(long id) {
+        return messageDao.findOne (id);
+    }
+
+    @Override
     public List<Message> getAllMessages() {
         return messageDao.findAll();//получить все записи
     }

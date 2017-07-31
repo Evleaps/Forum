@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Created by Ромчи on 25.07.2017.
+ Controller for {@link net.forum.model.User}.
  */
 @Controller
 public class LogInController {

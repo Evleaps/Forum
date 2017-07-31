@@ -1,6 +1,5 @@
 package net.forum.controller;
 
-import net.forum.model.Theme;
 import net.forum.service.ThemeService;
 import net.forum.service.TopicService;
 import net.forum.model.Topic;
@@ -36,30 +35,34 @@ public class TopicController {
     //ГЛАВНАЯ
     @RequestMapping(value = "topic/{id}", method = RequestMethod.GET)
     public String topicPage(Model model, HttpServletRequest request) {
-        List<Topic> allInstanceTopic =  topicService.getAllTopic ();
+        String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
+        String username = SecurityContextHolder.getContext ().getAuthentication ().getName ();
+        List<Topic> allInstanceTopic = topicService.getAllTopic ( );
         Collections.sort (allInstanceTopic);
+        model.addAttribute ("userRole", userRole);
+        model.addAttribute ("username", username);
         model.addAttribute ("allInstanceTopic", allInstanceTopic);
-        System.out.println ( thisURL (request) );
-        System.out.println (themeService.getAllThemes ().size () );
         model.addAttribute ("themeForm", themeService.findOne (thisURL (request)));//для названия в заголовке
-        model.addAttribute ("topicForm", new Topic ());
+        model.addAttribute ("topicForm", new Topic ( ));
         return "topic";
     }
-   //БЛОК СОЗДАНИЯ НОВОГО ТОПИКА
+
+    //БЛОК СОЗДАНИЯ НОВОГО ТОПИКА
     private int id;
+
     @RequestMapping(value = "/createTopic", method = RequestMethod.GET)
     public String pageCreateTopic(Model model, HttpServletRequest request) {
-        model.addAttribute ("topicForm", new Topic ());
+        model.addAttribute ("topicForm", new Topic ( ));
         id = postURL (request);
         return "createUpdateTopic";
     }
 
     @RequestMapping(value = "/createTopic", method = RequestMethod.POST)
     public String addTopic(@ModelAttribute("topicForm") Topic topicForm, Model model) {
-        if (topicForm.getId () == null) {
-            topicForm.setUsername (SecurityContextHolder.getContext ().getAuthentication ().getName ());
+        if (topicForm.getId ( ) == null) {
+            topicForm.setUsername (SecurityContextHolder.getContext ( ).getAuthentication ( ).getName ( ));
             topicForm.setThemeId (id);
-            topicForm.setLastPostDate (new Date ());
+            topicForm.setLastPostDate (new Date ( ));
             topicService.save (topicForm);
         }
         return "redirect:/topic/" + id;
@@ -68,16 +71,22 @@ public class TopicController {
     //БЛОК УДАЛЕНИЯ
     @RequestMapping(value = "/deleteTopic/{id}", method = RequestMethod.GET)
     public String deleteTopic(@PathVariable("id") int id, Model model, HttpServletRequest request) {
-        topicService.delete (id);
-        return "redirect:/topic/" + postURL(request);
+        String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
+        if (topicService.findOne (id).getUsername ( ).equals (
+                SecurityContextHolder.getContext ( ).getAuthentication ( ).getName ( ))
+                || userRole.equals ("[ROLE_ADMIN]")) {
+            topicService.delete (id);
+        }
+        return "redirect:/topic/" + postURL (request);
     }
 
     //БЛОК РЕДАКТИРОВАНИЯ
     private int url;
+
     @RequestMapping(value = "/updateTopic/{id}", method = RequestMethod.GET)
     public String updateTopic(@PathVariable("id") int id, Model model, HttpServletRequest request) {
         model.addAttribute ("topicForm", topicService.findOne (id));
-        List<Topic> allInstanceTopic =  topicService.getAllTopic ();
+        List<Topic> allInstanceTopic = topicService.getAllTopic ( );
         model.addAttribute ("allInstanceTopic", allInstanceTopic);
         url = postURL (request);
         return "createUpdateTopic";
@@ -86,9 +95,9 @@ public class TopicController {
     @RequestMapping(value = "/updateTopic/{id}", method = RequestMethod.POST)
     public String updateTopic(@PathVariable("id") int id,
                               @ModelAttribute("topicForm") Topic topicForm) {
-        topicForm.setLastPostDate (topicService.findOne (id).getLastPostDate ());
-        topicForm.setUsername (topicService.findOne (id).getUsername ());
-        topicForm.setThemeId (topicService.findOne (id).getThemeId ());
+        topicForm.setLastPostDate (topicService.findOne (id).getLastPostDate ( ));
+        topicForm.setUsername (topicService.findOne (id).getUsername ( ));
+        topicForm.setThemeId (topicService.findOne (id).getThemeId ( ));
         topicService.save (topicForm);
 
         return "redirect:/topic/" + url;
@@ -96,12 +105,12 @@ public class TopicController {
     //
 
     private int postURL(HttpServletRequest request) {
-        String url = request.getHeader("referer"); //URL предыдущая страница
+        String url = request.getHeader ("referer"); //URL предыдущая страница
         return Integer.parseInt (url.split ("/topic/")[1]);
     }
 
     private int thisURL(HttpServletRequest request) {
-        String url = request.getRequestURI ();//URL текущая страница
+        String url = request.getRequestURI ( );//URL текущая страница
         return Integer.parseInt (url.split ("/topic/")[1]);
     }
 }

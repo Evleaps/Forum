@@ -8,6 +8,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Validator for {@link User} class,
  * implements {@link Validator} interface.
@@ -48,18 +51,18 @@ public class UserValidator implements Validator {
             errors.rejectValue("username", "Duplicate.userForm.username");
         }
 /**Логин не должен содержать пунктуации*/
-        if (user.getUsername ().toString ().matches ("\\p{Punct}")) {
-            errors.rejectValue("username", "Punctuation.userForm.form");
+        if (searchSumboil (user.getUsername (),"\\p{Punct}")) {
+            errors.rejectValue("username", "NotPunctuation.userForm.form");
         }
 
 /**поле Last name не должен содержать пунктуации*/
-        if (user.getLastName ().toString ().matches ("\\p{Punct}")) {
-            errors.rejectValue("lastName", "Punctuation.userForm.form");
+        if (searchSumboil (user.getLastName (),"\\p{Punct}")) {
+            errors.rejectValue("lastName", "NotPunctuation.userForm.form");
         }
 
 /**Поле First name не должен содержать пунктуации*/
-        if (user.getFirstName ().toString ().matches ("\\p{Punct}")) {
-            errors.rejectValue("firstName", "Punctuation.userForm.form");
+        if (searchSumboil (user.getFirstName (),"\\p{Punct}")) {
+            errors.rejectValue("firstName", "NotPunctuation.userForm.form");
         }
 
 /**Если поле password имеет короткий пароль, выводим сообщение из проперти*/
@@ -67,28 +70,33 @@ public class UserValidator implements Validator {
             errors.rejectValue("password", "Size.userForm.password");
         }
 /**Пароль должен содержать минимум 1 число*/
-        if (!user.getPassword().matches ("\\d")) {
+        if (!searchSumboil (user.getPassword(),"\\d+")) {
             errors.rejectValue("password", "RequiredMinOneNumber.userForm.password");
         }
 
  /**Пароль должен содержать как минимум один знак пунктуации**/
-        if (!user.getPassword().toString ().matches ("\\p{Punct}")) {
+        if (!searchSumboil (user.getPassword (),"\\p{Punct}+")) {
             errors.rejectValue("password", "Punctuation.userForm.form");
         }
 
-/**Пароль должен содержать как минимум один знак верхнего регистра**/
-        if (!user.getPassword().toString ().matches ("\\p{Upper}")) {
-            errors.rejectValue("password", "Letter.userForm.password");
-        }
-
-/**Пароль должен содержать как минимум один знак нижнего регистра*/
-        if (!user.getPassword().toString ().matches ("\\p{Lower}")) {
+/**Пароль должен содержать как минимум один знак верхнего и нижнего регистра**/
+        if (!searchSumboil (user.getPassword(),"\\p{Upper}+\\p{Lower}+")) {
             errors.rejectValue("password", "Letter.userForm.password");
         }
 
 /**Если поле password не совпадает с повторите пароль, выводим сообщение из проперти*/
         if (!user.getConfirmPassword().equals(user.getPassword())) {
+            System.out.println ("PASSSSSSSSSSSWORD="+user.getPassword () );
+            System.out.println ("PASSSSSSSSSSSWORD="+user.getConfirmPassword () );
             errors.rejectValue("confirmPassword", "Different.userForm.password");
         }
+    }
+
+    private boolean searchSumboil(String str, String regex) {
+        Pattern pattern = Pattern.compile (regex);
+        Matcher matcher = pattern.matcher (str);
+
+        if (matcher.find ()) return true;
+        else return false;
     }
 }

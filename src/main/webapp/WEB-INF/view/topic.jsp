@@ -78,12 +78,16 @@
                 <tbody>
                 <tr>
                     <td>${allInstanceTopic.username}</td>
-                    <td><a href="/chat/${allInstanceTopic.id}">${allInstanceTopic.topicName}</a></td>
+                    <td><a href="/message/${allInstanceTopic.id}">${allInstanceTopic.topicName}</a></td>
                     <td>${allInstanceTopic.lastPostDate}</td>
-                    <td>
-                        <a href="<c:url value="/deleteTopic/${allInstanceTopic.id}"/>" class="pull-left btn btn-danger">Delete</a>
-                        <a href="<c:url value="/updateTopic/${allInstanceTopic.id}"/>" class="pull-left btn btn-primary">Update</a>
-                    </td>
+                    <c:if test="${allInstanceTopic.username.equals(username) || userRole.equals('[ROLE_ADMIN]')}">
+                        <td>
+                            <a href="<c:url value="/deleteTopic/${allInstanceTopic.id}"/>"
+                               class="pull-left btn btn-danger">Delete</a>
+                            <a href="<c:url value="/updateTopic/${allInstanceTopic.id}"/>"
+                               class="pull-left btn btn-primary">Update</a>
+                        </td>
+                    </c:if>
                 </tr>
                 </tbody>
             </c:if>

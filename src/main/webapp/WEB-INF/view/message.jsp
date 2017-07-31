@@ -81,7 +81,12 @@
                                         <div class="chat-body1 clearfix">
                                             <p><b>${allInstanceMessages.username}</b>
                                                 <br>${allInstanceMessages.message}</p>
-                                            <div class="chat_time pull-right">${allInstanceMessages.date}</div>
+                                            <div class="chat_time pull-right"> &nbsp; ${allInstanceMessages.date}</div>
+                                                <%--Удалять можно только свои сообщения, PS в контроллере тоже есть проверка--%>
+                                            <c:if test="${allInstanceMessages.username.equals(username) || userRole.equals('[ROLE_ADMIN]')}">
+                                                <a href="<c:url value="/deleteMessage/${allInstanceMessages.id}"/>"
+                                                   class="pull-right">Delete</a>
+                                            </c:if>
                                         </div>
                                     </li>
                                 </c:if>
@@ -93,15 +98,14 @@
                     <%--Ввод сообщений в textatea и отправка формы на сервер
                     P.S. Форма отправляет данные на ту-же страницу на которой находимся,
                     ModelAttribyte должен быть прописан и в GET и в POST, что бы знать, куда отправлять и откуда брать--%>
-                    <form:form action="/chat" method="POST" modelAttribute="messageForm">
+                    <form:form action="/message" method="POST" modelAttribute="messageForm">
                         <div class="message_write">
                             <form:textarea resize="none" path="message" class="form-control"
                                            placeholder="Your message.."/><%--все параметры прописываются внутри формы--%>
                             <div class="clearfix"></div>
                             <div class="chat_bottom">
                                 <button class="pull-right btn btn-primary" type="submit">Send</button>
-                               <%-- +1 потому что адресная строка с 1 начинается, а id findAll с 0--%>
-                                <a href="/chat/${idTopic+1}" class="pull-left btn btn-primary">Refresh</a>
+                                <a href="/message/${topicForm.id}" class="pull-left btn btn-primary">Refresh</a>
                             </div>
                         </div>
                     </form:form>

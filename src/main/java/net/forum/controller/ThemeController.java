@@ -3,6 +3,7 @@ package net.forum.controller;
 import net.forum.model.Theme;
 import net.forum.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,8 +30,10 @@ public class ThemeController {
     /*страница форума, */
     @RequestMapping(value = {"/","/forum"}, method = RequestMethod.GET)
     public String forum(Model model) {
+        String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
         List<Theme> allInstanceTheme = themeService.getAllThemes ();
         Collections.sort (allInstanceTheme);
+        model.addAttribute ("userRole", userRole);
         model.addAttribute ("allInstenceTheme", allInstanceTheme);
         model.addAttribute ("themeForm", new Theme ());
         return "forum";
@@ -54,7 +57,10 @@ public class ThemeController {
     //БЛОК УДАЛЕНИЯ
     @RequestMapping(value = "/deleteTheme/{id}", method = RequestMethod.GET)
     public String deleteTheme(@PathVariable("id") int id, Model model) {
-        themeService.delete (id);
+        String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
+        if (userRole.equals ("[ROLE_ADMIN]")) {
+            themeService.delete (id);
+        }
         return "redirect:/forum";
     }
 
@@ -71,7 +77,10 @@ public class ThemeController {
     public String updateTheme(@PathVariable("id") int id,
                               @ModelAttribute("themeForm") Theme themeForm) {
         themeForm.setLastPostDate (themeService.findOne (id).getLastPostDate ());
-        themeService.save (themeForm);
+        String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
+        if (userRole.equals ("[ROLE_ADMIN]")) {
+            themeService.save (themeForm);
+        }
 
         return "redirect:/forum";
     }
