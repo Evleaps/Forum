@@ -96,9 +96,9 @@ public class MessageController {
         topicService.save (topic);
 
         theme.setId (themeService.findOne (topicService.findOne (id).getThemeId ()).getId ());
-        theme.setDescription (themeService.findOne (id).getDescription ());
+        theme.setDescription (themeService.findOne (topicService.findOne (id).getThemeId ()).getDescription ());
         theme.setLastPostDate (date);
-        theme.setThemeName (themeService.findOne (id).getThemeName ());
+        theme.setThemeName (themeService.findOne (topicService.findOne (id).getThemeId ()).getThemeName ());
         themeService.save (theme);
     }
 }

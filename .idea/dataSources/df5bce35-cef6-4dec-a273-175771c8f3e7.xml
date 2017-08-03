@@ -36,7 +36,7 @@
     </column>
     <column id="23" parent="15" name="message">
       <Position>3</Position>
-      <DataType>varchar(255)|0</DataType>
+      <DataType>varchar(1000)|0</DataType>
     </column>
     <column id="24" parent="15" name="topicId">
       <Position>4</Position>

@@ -63,7 +63,7 @@
         <h2 class="form-heading" align="center">Update theme</h2>
     </c:if>
     <c:if test="${themeForm.themeName == null}">
-        <h2 class="form-heading" align="center">Create new topic</h2>
+        <h2 class="form-heading" align="center">Create new theme</h2>
     </c:if>
     <br>
     <br>
