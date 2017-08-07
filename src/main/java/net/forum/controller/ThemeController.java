@@ -3,13 +3,14 @@ package net.forum.controller;
 import net.forum.model.Theme;
 import net.forum.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Date;
@@ -24,17 +25,21 @@ import java.util.List;
 @Controller
 public class ThemeController {
 
+    private final int PAGE_SIZE = 5;
+
     @Autowired
     private ThemeService themeService;
 
     /*страница форума, */
-    @RequestMapping(value = {"/","/forum"}, method = RequestMethod.GET)
-    public String forum(Model model) {
+    @RequestMapping(value = {"/forum/{id}"}, method = RequestMethod.GET)
+    public String forum(Model model, @PathVariable("id") int id) {
         String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
-        List<Theme> allInstanceTheme = themeService.getAllThemes ();
-        Collections.sort (allInstanceTheme);
+        Pageable pageable = new PageRequest (id, PAGE_SIZE);
+        Page allInstanceTheme = themeService.findAll (pageable);
+       // Collections.sort (allInstanceTheme);
         model.addAttribute ("userRole", userRole);
-        model.addAttribute ("allInstenceTheme", allInstanceTheme);
+        model.addAttribute ("sizePage", setPAGE_SIZE ());
+        model.addAttribute ("allInstenceTheme", allInstanceTheme.getContent ());
         model.addAttribute ("themeForm", new Theme ());
         return "forum";
     }
@@ -83,5 +88,14 @@ public class ThemeController {
         }
 
         return "redirect:/forum";
+    }
+
+    private int setPAGE_SIZE(){
+        //делим число записей на макс кол-во записей на 1-й странице.
+        int page = 1;
+        if (themeService.getAllThemes ().size () > PAGE_SIZE) {
+            page = themeService.getAllThemes ( ).size ( ) % PAGE_SIZE;
+        }
+        return page;
     }
 }

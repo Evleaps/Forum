@@ -17,8 +17,12 @@
         <intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
 
         <!--стартовая страница - форум-->
-        <form-login login-page="/login" default-target-url="/forum" authentication-failure-url="/login?error"
-                    username-parameter="username" password-parameter="password"/>
+        <form-login login-page="/login"
+                    default-target-url="/forum/0"
+                    always-use-default-target="true"
+                    authentication-failure-url="/login?error"
+                    username-parameter="username"
+                    password-parameter="password"/>
 
         <logout logout-success-url="/login?logout"/>
     </http>

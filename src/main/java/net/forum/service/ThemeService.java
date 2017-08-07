@@ -2,6 +2,9 @@ package net.forum.service;
 
 
 import net.forum.model.Theme;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,6 +19,9 @@ public interface ThemeService {
     void delete(long id);
 
     Theme findOne(long id);
+
+  //  Page findAll(PageRequest pageRequest);
+    Page findAll(Pageable pageable);
 
     List<Theme> getAllThemes();
 }

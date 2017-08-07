@@ -93,6 +93,22 @@
 </c:if>
 <%--ТАБЛИЦА С ТЕМАМИ ФОРУМА  - КОНЕЦ --%>
 
+<%--ПАДЖИНАЦИЯ--%>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" href="<c:url value="/forum/${--i}"/>">Previous</a>
+        </li>
+        <c:forEach var="i" begin="0" end="${sizePage}">
+            <li class="page-item"><a class="page-link" href="<c:url value="/forum/${i}"/>">${i}</a></li>
+        </c:forEach>
+        <li class="page-item">
+            <a class="page-link" href="<c:url value="/forum/${i+1}"/>">Next</a>
+        </li>
+    </ul>
+</nav>
+<%--ПАДЖИНАЦИЯ - КОНЕЦ--%>
+
 <br>
 <br>
 <br>
