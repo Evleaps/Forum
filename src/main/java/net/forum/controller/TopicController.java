@@ -4,6 +4,9 @@ import net.forum.service.ThemeService;
 import net.forum.service.TopicService;
 import net.forum.model.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static net.forum.controller.Constant.PAGE_SIZE;
 
 /**
  * Controller for POJO {@link net.forum.model.Theme}
@@ -37,8 +42,10 @@ public class TopicController {
     public String topicPage(Model model, HttpServletRequest request) {
         String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
         String username = SecurityContextHolder.getContext ().getAuthentication ().getName ();
-        List<Topic> allInstanceTopic = topicService.getAllTopic ( );
-        Collections.sort (allInstanceTopic);
+        Pageable pageable = new PageRequest (id, PAGE_SIZE);
+        Page allInstanceTopic = topicService.findAll (pageable);
+
+        model.addAttribute ("sizePage",setPAGE_SIZE ());
         model.addAttribute ("userRole", userRole);
         model.addAttribute ("username", username);
         model.addAttribute ("allInstanceTopic", allInstanceTopic);
@@ -102,7 +109,6 @@ public class TopicController {
 
         return "redirect:/topic/" + url;
     }
-    //
 
     private int postURL(HttpServletRequest request) {
         String url = request.getHeader ("referer"); //URL предыдущая страница

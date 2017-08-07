@@ -36,22 +36,13 @@ public class ThemeServiceImpl implements ThemeService{
         return themeDao.findOne (id);
     }
 
-
-/*    @Override
-    public Page findAll(PageRequest pageRequest) {
-       // PageRequest pageRequest = new PageRequest (pageNumber, 10);
-        return themeDao.findAll (pageRequest);
-    }*/
     @Override
     public Page findAll(Pageable pageable) {
-        //PageRequest pageRequest = new PageRequest (pageNumber, 10);
         return themeDao.findAll (pageable);
     }
 
     @Override
     public List<Theme> getAllThemes() {
-        PageRequest pageRequest = new PageRequest (0, 5);
-        List<Theme> resultsThemes = themeDao.findAll (pageRequest).getContent ();
-        return resultsThemes;
+        return themeDao.findAll ();
     }
 }

@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static net.forum.controller.Constant.PAGE_SIZE;
+
 /**
  * Controller for POJO {@link net.forum.model.Theme}
  *
@@ -24,8 +27,6 @@ import java.util.List;
 
 @Controller
 public class ThemeController {
-
-    private final int PAGE_SIZE = 5;
 
     @Autowired
     private ThemeService themeService;
@@ -37,8 +38,9 @@ public class ThemeController {
         Pageable pageable = new PageRequest (id, PAGE_SIZE);
         Page allInstanceTheme = themeService.findAll (pageable);
        // Collections.sort (allInstanceTheme);
+
         model.addAttribute ("userRole", userRole);
-        model.addAttribute ("sizePage", setPAGE_SIZE ());
+        model.addAttribute ("sizePage",Constant.setPAGE_SIZE (themeService.getAllThemes ()));
         model.addAttribute ("allInstenceTheme", allInstanceTheme.getContent ());
         model.addAttribute ("themeForm", new Theme ());
         return "forum";
@@ -88,14 +90,5 @@ public class ThemeController {
         }
 
         return "redirect:/forum";
-    }
-
-    private int setPAGE_SIZE(){
-        //делим число записей на макс кол-во записей на 1-й странице.
-        int page = 1;
-        if (themeService.getAllThemes ().size () > PAGE_SIZE) {
-            page = themeService.getAllThemes ( ).size ( ) % PAGE_SIZE;
-        }
-        return page;
     }
 }

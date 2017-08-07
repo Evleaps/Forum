@@ -9,5 +9,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by Ромчи on 25.07.2017.
  */
 public interface ThemeDao extends JpaRepository<Theme, Long> {
- //   Page<Theme> findAll(Pageable pageable, Long id);
 }

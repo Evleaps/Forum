@@ -3,6 +3,8 @@ package net.forum.service;
 import net.forum.dao.TopicDao;
 import net.forum.model.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,10 @@ public class TopicServiceImpl implements TopicService {
         return topicDao.findOne (id);
     }
 
+    @Override
+    public Page<Topic> findAll(Pageable pageable) {
+        return topicDao.findAll (pageable);
+    }
 
     @Override
     public List<Topic> getAllTopic() {

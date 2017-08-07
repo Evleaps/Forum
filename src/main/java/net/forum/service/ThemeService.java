@@ -20,7 +20,6 @@ public interface ThemeService {
 
     Theme findOne(long id);
 
-  //  Page findAll(PageRequest pageRequest);
     Page findAll(Pageable pageable);
 
     List<Theme> getAllThemes();
