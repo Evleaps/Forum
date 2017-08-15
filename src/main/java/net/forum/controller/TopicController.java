@@ -1,5 +1,6 @@
 package net.forum.controller;
 
+import net.forum.model.Theme;
 import net.forum.service.ThemeService;
 import net.forum.service.TopicService;
 import net.forum.model.Topic;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static net.forum.controller.Constant.PAGE_SIZE;
 
+
 /**
  * Controller for POJO {@link net.forum.model.Theme}
  * Это контроллер работает с формой(JSP) создания новой темы, добавляет новый топик и переадресовывает
@@ -38,19 +40,23 @@ public class TopicController {
     private ThemeService themeService;
 
     //ГЛАВНАЯ
-    @RequestMapping(value = "topic/{id}", method = RequestMethod.GET)
-    public String topicPage(Model model, HttpServletRequest request) {
+    @RequestMapping(value = "topic{id}/{idPage}", method = RequestMethod.GET)
+    public String topicPage(Model model, HttpServletRequest request,
+                            @PathVariable("id") int topicId,
+                            @PathVariable("idPage") int idPage) {
         String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
         String username = SecurityContextHolder.getContext ().getAuthentication ().getName ();
-        Pageable pageable = new PageRequest (id, PAGE_SIZE);
-        Page allInstanceTopic = topicService.findAll (pageable);
+        Pageable pageable = new PageRequest (idPage, PAGE_SIZE);
+        Theme theme = themeService.findOne (thisURL (request));
+        Page allInstanceTopic = topicService.findAll (pageable, theme.getId ());
 
-        model.addAttribute ("sizePage",setPAGE_SIZE ());
+        model.addAttribute ("sizePage", allInstanceTopic.getTotalPages ());
         model.addAttribute ("userRole", userRole);
         model.addAttribute ("username", username);
-        model.addAttribute ("allInstanceTopic", allInstanceTopic);
-        model.addAttribute ("themeForm", themeService.findOne (thisURL (request)));//для названия в заголовке
-        model.addAttribute ("topicForm", new Topic ( ));
+        model.addAttribute ("allInstanceTopic", allInstanceTopic.getContent ());
+        model.addAttribute ("themeForm", theme);//для названия в заголовке
+        model.addAttribute ("topicId", topicId);//для паджинации
+        model.addAttribute ("idPage", idPage);//для паджинации
         return "topic";
     }
 
@@ -72,7 +78,7 @@ public class TopicController {
             topicForm.setLastPostDate (new Date ( ));
             topicService.save (topicForm);
         }
-        return "redirect:/topic/" + id;
+        return "redirect:/topic" + id + "/0";
     }
 
     //БЛОК УДАЛЕНИЯ
@@ -84,7 +90,7 @@ public class TopicController {
                 || userRole.equals ("[ROLE_ADMIN]")) {
             topicService.delete (id);
         }
-        return "redirect:/topic/" + postURL (request);
+        return "redirect:/topic" + postURL (request) + "/0";
     }
 
     //БЛОК РЕДАКТИРОВАНИЯ
@@ -107,16 +113,19 @@ public class TopicController {
         topicForm.setThemeId (topicService.findOne (id).getThemeId ( ));
         topicService.save (topicForm);
 
-        return "redirect:/topic/" + url;
+        return "redirect:/topic" + url + "/0";
     }
 
     private int postURL(HttpServletRequest request) {
         String url = request.getHeader ("referer"); //URL предыдущая страница
-        return Integer.parseInt (url.split ("/topic/")[1]);
+        url = url.split ("topic")[1];
+        return Integer.parseInt (url.split ("/")[0]);
     }
 
     private int thisURL(HttpServletRequest request) {
         String url = request.getRequestURI ( );//URL текущая страница
-        return Integer.parseInt (url.split ("/topic/")[1]);
+        url = url.split ("topic")[1];
+        System.out.println ("AAAAAAAAAAAAAAAAAAAAAAA_thisURL=" + url.split ("/")[0]  );
+        return Integer.parseInt (url.split ("/")[0]);
     }
 }

@@ -16,7 +16,7 @@ public interface TopicService {
 
     Topic findOne(long id);
 
-    Page<Topic> findAll(Pageable pageable);
+    Page<Topic> findAll(Pageable pageable, long themeId);
 
     List<Topic> getAllTopic();
 }

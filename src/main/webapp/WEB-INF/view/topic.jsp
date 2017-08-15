@@ -37,7 +37,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/forum">FORUM INTECH</a>
+            <a class="navbar-brand" href="/forum/0">FORUM INTECH</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -95,6 +95,26 @@
     </table>
 </c:if>
 <%--ТАБЛИЦА С ТОПИКАМИ - КОНЕЦ--%>
+
+<%--ПАДЖИНАЦИЯ--%>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <c:if test="${idPage-1 >= 0}">
+                <a class="page-link" href="<c:url value="/topic${topicId}/${idPage-1}"/>">Previous</a>
+            </c:if>
+        </li>
+        <c:forEach var="i" begin="0" end="${sizePage-1}">
+            <li class="page-item"><a class="page-link" href="<c:url value="/topic${topicId}/${i}"/>">${i+1}</a></li>
+        </c:forEach>
+        <li class="page-item">
+            <c:if test="${idPage+1 <= sizePage}">
+                <a class="page-link" href="<c:url value="/topic${topicId}/${idPage+1}"/>">Next</a>
+            </c:if>
+        </li>
+    </ul>
+</nav>
+<%--ПАДЖИНАЦИЯ - КОНЕЦ--%>
 
 
 <br>

@@ -37,12 +37,11 @@ public class ThemeController {
         String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
         Pageable pageable = new PageRequest (id, PAGE_SIZE);
         Page allInstanceTheme = themeService.findAll (pageable);
-       // Collections.sort (allInstanceTheme);
 
         model.addAttribute ("userRole", userRole);
-        model.addAttribute ("sizePage",Constant.setPAGE_SIZE (themeService.getAllThemes ()));
-        model.addAttribute ("allInstenceTheme", allInstanceTheme.getContent ());
-        model.addAttribute ("themeForm", new Theme ());
+        model.addAttribute ("sizePage", allInstanceTheme.getTotalPages ());
+        model.addAttribute ("allInstanceTheme", allInstanceTheme.getContent ());
+        model.addAttribute ("forumId", id);
         return "forum";
     }
 

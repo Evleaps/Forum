@@ -37,7 +37,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/forum">FORUM INTECH</a>
+            <a class="navbar-brand" href="/forum/0">FORUM INTECH</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -63,7 +63,7 @@
 <br>
 <br>
 <%--ТАБЛИЦА С ТЕМАМИ ФОРУМА--%>
-<c:if test="${!empty allInstenceTheme}">
+<c:if test="${!empty allInstanceTheme}">
     <table class="table">
         <thead class="thead-inverse">
         <tr>
@@ -74,15 +74,15 @@
             </c:if>
         </tr>
         </thead>
-        <c:forEach items="${allInstenceTheme}" var="allInstanceTheme">
+        <c:forEach items="${allInstanceTheme}" var="allInstanceTheme">
             <tbody>
             <tr>
-                <td><a href="/topic/${allInstanceTheme.id}">${allInstanceTheme.themeName}</a></td>
+                <td><a href="/topic${allInstanceTheme.id}/0">${allInstanceTheme.themeName}</a></td>
                 <td>${allInstanceTheme.lastPostDate}</td>
                 <c:if test="${userRole.equals('[ROLE_ADMIN]')}">
                     <td>
-                        <a href="<c:url value="/deleteTheme/${allInstanceTheme.id}"/>" class="pull-left btn btn-danger">Delete</a>
-                        <a href="<c:url value="/updateTheme/${allInstanceTheme.id}"/>"
+                        <a href="<c:url value="/deleteTheme${allInstanceTheme.id}"/>" class="pull-left btn btn-danger">Delete</a>
+                        <a href="<c:url value="/updateTheme${allInstanceTheme.id}"/>"
                            class="pull-left btn btn-primary">Update</a>
                     </td>
                 </c:if>
@@ -97,13 +97,17 @@
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
         <li class="page-item">
-            <a class="page-link" href="<c:url value="/forum/${--i}"/>">Previous</a>
+            <c:if test="${forumId-1 >= 0}">
+                <a class="page-link" href="<c:url value="/forum/${forumId-1}"/>">Previous</a>
+            </c:if>
         </li>
-        <c:forEach var="i" begin="0" end="${sizePage}">
+        <c:forEach var="i" begin="0" end="${sizePage-1}">
             <li class="page-item"><a class="page-link" href="<c:url value="/forum/${i}"/>">${i+1}</a></li>
         </c:forEach>
         <li class="page-item">
-            <a class="page-link" href="<c:url value="/forum/${i+1}"/>">Next</a>
+            <c:if test="${forumId+1 <= sizePage}">
+                <a class="page-link" href="<c:url value="/forum/${forumId+1}"/>">Next</a>
+            </c:if>
         </li>
     </ul>
 </nav>

@@ -5,8 +5,10 @@ import net.forum.model.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -15,7 +17,6 @@ import java.util.List;
 
 @Service
 public class TopicServiceImpl implements TopicService {
-
     @Autowired
     private TopicDao topicDao;
 
@@ -35,8 +36,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Page<Topic> findAll(Pageable pageable) {
-        return topicDao.findAll (pageable);
+    public Page<Topic> findAll(Pageable pageable, long themeId) {
+        return topicDao.findAll (pageable, Math.toIntExact (themeId));
     }
 
     @Override
