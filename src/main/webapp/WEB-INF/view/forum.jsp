@@ -105,7 +105,7 @@
             <li class="page-item"><a class="page-link" href="<c:url value="/forum/${i}"/>">${i+1}</a></li>
         </c:forEach>
         <li class="page-item">
-            <c:if test="${forumId+1 <= sizePage}">
+            <c:if test="${forumId+1 < sizePage}">
                 <a class="page-link" href="<c:url value="/forum/${forumId+1}"/>">Next</a>
             </c:if>
         </li>

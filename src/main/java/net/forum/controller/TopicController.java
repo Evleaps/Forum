@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -71,7 +69,7 @@ public class TopicController {
     }
 
     @RequestMapping(value = "/createTopic", method = RequestMethod.POST)
-    public String addTopic(@ModelAttribute("topicForm") Topic topicForm, Model model) {
+    public String addTopic(@ModelAttribute("topicForm") Topic topicForm) {
         if (topicForm.getId ( ) == null) {
             topicForm.setUsername (SecurityContextHolder.getContext ( ).getAuthentication ( ).getName ( ));
             topicForm.setThemeId (id);
@@ -83,7 +81,7 @@ public class TopicController {
 
     //БЛОК УДАЛЕНИЯ
     @RequestMapping(value = "/deleteTopic/{id}", method = RequestMethod.GET)
-    public String deleteTopic(@PathVariable("id") int id, Model model, HttpServletRequest request) {
+    public String deleteTopic(@PathVariable("id") int id, HttpServletRequest request) {
         String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
         if (topicService.findOne (id).getUsername ( ).equals (
                 SecurityContextHolder.getContext ( ).getAuthentication ( ).getName ( ))
@@ -125,7 +123,6 @@ public class TopicController {
     private int thisURL(HttpServletRequest request) {
         String url = request.getRequestURI ( );//URL текущая страница
         url = url.split ("topic")[1];
-        System.out.println ("AAAAAAAAAAAAAAAAAAAAAAA_thisURL=" + url.split ("/")[0]  );
         return Integer.parseInt (url.split ("/")[0]);
     }
 }

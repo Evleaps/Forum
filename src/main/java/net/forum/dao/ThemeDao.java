@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 /**
- * Created by Ромчи on 25.07.2017.
+ *
  */
 public interface ThemeDao extends JpaRepository<Theme, Long> {
 
-    @Query("select u from Theme order by u.lastPastDate desc")
+    @Query("select t from Theme t order by t.lastPostDate desc")
     Page<Theme> findAll(Pageable pageable);
 
 }

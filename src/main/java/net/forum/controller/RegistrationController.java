@@ -47,6 +47,6 @@ public class RegistrationController {
         userService.save(userForm);
         securityService.autoLogin(userForm.getUsername (), userForm.getConfirmPassword());
 
-        return "redirect:/forum";//перенаправляем не на jsp, а на адресс "/"
+        return "redirect:/forum/0";//перенаправляем не на jsp, а на адресс "/"
     }
 }

@@ -52,22 +52,22 @@ public class ThemeController {
     }
 
     @RequestMapping(value = "/createTheme", method = RequestMethod.POST)
-    public String addTheme(@ModelAttribute("themeForm") Theme themeForm, Model model) {
+    public String addTheme(@ModelAttribute("themeForm") Theme themeForm) {
         if (themeForm.getId () == null) {
             themeForm.setLastPostDate (new Date ());
             themeService.save (themeForm);
         }
-        return "redirect:/forum";
+        return "redirect:/forum/0";
     }
 
     //БЛОК УДАЛЕНИЯ
     @RequestMapping(value = "/deleteTheme/{id}", method = RequestMethod.GET)
-    public String deleteTheme(@PathVariable("id") int id, Model model) {
+    public String deleteTheme(@PathVariable("id") int id) {
         String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
         if (userRole.equals ("[ROLE_ADMIN]")) {
             themeService.delete (id);
         }
-        return "redirect:/forum";
+        return "redirect:/forum/0";
     }
 
     //БЛОК РЕДАКТИРОВАНИЯ
@@ -88,6 +88,6 @@ public class ThemeController {
             themeService.save (themeForm);
         }
 
-        return "redirect:/forum";
+        return "redirect:/forum/0";
     }
 }
