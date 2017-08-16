@@ -61,7 +61,7 @@ public class ThemeController {
     }
 
     //БЛОК УДАЛЕНИЯ
-    @RequestMapping(value = "/deleteTheme/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteTheme{id}/", method = RequestMethod.GET)
     public String deleteTheme(@PathVariable("id") int id) {
         String userRole = SecurityContextHolder.getContext ().getAuthentication ().getAuthorities ().toString ();
         if (userRole.equals ("[ROLE_ADMIN]")) {
@@ -71,7 +71,7 @@ public class ThemeController {
     }
 
     //БЛОК РЕДАКТИРОВАНИЯ
-    @RequestMapping(value = "/updateTheme/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateTheme{id}/", method = RequestMethod.GET)
     public String updateTheme(@PathVariable("id") int id, Model model) {
         model.addAttribute ("themeForm", themeService.findOne (id));
         List<Theme> allInstanceTheme =  themeService.getAllThemes ();
@@ -79,7 +79,7 @@ public class ThemeController {
         return "createUpdateTheme";
     }
 
-    @RequestMapping(value = "/updateTheme/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateTheme{id}/", method = RequestMethod.POST)
     public String updateTheme(@PathVariable("id") int id,
                               @ModelAttribute("themeForm") Theme themeForm) {
         themeForm.setLastPostDate (themeService.findOne (id).getLastPostDate ());

@@ -3,10 +3,6 @@ package net.forum.model;
 import javax.persistence.*;
 import java.util.Set;
 
-/**
- * Simple JavaBean domain object that represents a User.
- */
-
 @Entity
 @Table(name = "users")
 public class User {
